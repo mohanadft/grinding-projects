@@ -21,7 +21,7 @@ ccwc is a simple command-line utility inspired by the Unix 'wc' command. It prov
 1. Clone The Repo.
 2. Navigate to project folder.
 3. Make sure `pnpm` is installed on your machine.
-4. run `pnpm install` to install all the dependency.
+4. run `pnpm install` to install all the dependencies.
 5. run `npm install -g .`. (make sure you are in the root directory of the project).
 6. run `ccwc --help`, here is the expected output:
 ```bash
