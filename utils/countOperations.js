@@ -33,13 +33,14 @@ function bytes({ flag, inputData, argv }) {
 }
 
 function words({ flag, inputData, argv }) {
-  // TODO: Need some improvements, words count is not accurate.
-
   let res = '';
   const fileName = checkFile({ flag, inputData, argv });
 
   if (!fileName.length) {
-    res = inputData.split(' ').filter(e => e.length >= 1).length;
+    res = inputData
+      .split('\n')
+      .map(e => e.split(' ').filter(e => e.length >= 1))
+      .reduce((acc, curr) => acc + curr.length, 0);
   } else {
     const fileContent = getContent({ flag, fileName, inputData });
     res = fileContent.split(' ').filter(e => e.length >= 1).length;
