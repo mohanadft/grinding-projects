@@ -76,7 +76,7 @@ const main = inputData => {
       `${lines('_', inputData)} ${words('_', inputData)} ${bytes(
         '_',
         inputData
-      )} ${file || ''}`
+      )} ${file}`
     );
   }
   process.exit();
@@ -95,7 +95,7 @@ function lines(flag, inputData) {
   let res = '';
   const fileName = checkFile(flag, inputData);
 
-  if (!fileName) {
+  if (!fileName.length) {
     res = inputData.split('\n').length - 1;
   } else {
     const fileName = checkFile(flag);
@@ -112,7 +112,7 @@ function bytes(flag, inputData) {
   let res = '';
   const fileName = checkFile(flag, inputData);
 
-  if (!fileName) {
+  if (!fileName.length) {
     res = Buffer.from(inputData).length;
   } else {
     const fileName = checkFile(flag);
@@ -131,7 +131,7 @@ function words(flag, inputData) {
   let res = '';
   const fileName = checkFile(flag, inputData);
 
-  if (!fileName) {
+  if (!fileName.length) {
     res = inputData.split(' ').filter(e => e.length >= 1).length;
   } else {
     const fileName = checkFile(flag);
@@ -149,7 +149,7 @@ function characters(flag, inputData) {
 
   const fileName = checkFile(flag, inputData);
 
-  if (!fileName) {
+  if (!fileName.length) {
     res = inputData.split('').length;
   } else {
     const fileContent = fs.readFileSync(fileName, 'utf8');
@@ -166,7 +166,7 @@ function checkFile(flag, inputData) {
   const file = flag === '_' ? String(argv[flag][0]) : String(argv[flag]);
 
   if (inputData || file === 'undefined') {
-    return false;
+    return '';
   }
 
   const fileExtensions = /\.(json|txt|doc|docx|html)$/gi;
