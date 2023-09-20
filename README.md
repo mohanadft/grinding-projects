@@ -2,6 +2,8 @@
 
 ccwc is a simple command-line utility inspired by the Unix 'wc' command. It provides word, line, character, and byte count statistics for text files. This project is part of a coding challenge series.
 
+[The Challenge](https://codingchallenges.substack.com/p/coding-challenge-1)
+
 ## 🚀 Getting Started
 
 1. **Installation:** Download or clone the project repository to your local machine.
@@ -14,7 +16,7 @@ ccwc is a simple command-line utility inspired by the Unix 'wc' command. It prov
 2. [x] Count Lines
 3. [x] Count Words (Need Some Improvements)
 4. [x] Count Characters
-5. [ ] Default Options
+5. [x] Piping text to cli through previous executed commands (if no file is specified)
 
 ## 🎈 How to use it
 
