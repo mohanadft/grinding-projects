@@ -76,7 +76,7 @@ const main = inputData => {
       `${lines('_', inputData)} ${words('_', inputData)} ${bytes(
         '_',
         inputData
-      )} ${file}`
+      )} ${file || ''}`
     );
   }
   process.exit();
@@ -103,7 +103,7 @@ function lines(flag, inputData) {
     res = fileContent.split('\n').length - 1;
   }
 
-  if (flag === '_') return res;
+  if (flag === '_' || inputData) return `${res}`;
 
   return `${res} ${fileName}`;
 }
@@ -120,7 +120,7 @@ function bytes(flag, inputData) {
     res = fileContent.length;
   }
 
-  if (flag === '_') return res;
+  if (flag === '_' || inputData) return `${res}`;
 
   return `${res} ${fileName}`;
 }
@@ -139,7 +139,7 @@ function words(flag, inputData) {
     res = fileContent.split(' ').filter(e => e.length >= 1).length;
   }
 
-  if (flag === '_') return res;
+  if (flag === '_' || inputData) return `${res}`;
 
   return `${res} ${fileName}`;
 }
@@ -157,7 +157,7 @@ function characters(flag, inputData) {
     res = fileContent.split('').length;
   }
 
-  if (flag === '_') return res;
+  if (flag === '_' || inputData) return `${res}`;
 
   return `${res} ${fileName}`;
 }
