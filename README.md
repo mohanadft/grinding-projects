@@ -1,6 +1,6 @@
 # 📊 ccwc - Coding Challenge Word Count
 
-ccwc is a simple command-line utility inspired by the Unix 'wc' command. It provides word, line, character, and byte count statistics for text files. This project is part of a coding challenge series.
+ccwc is a simple command-line utility inspired by the Unix [`wc`](https://www.geeksforgeeks.org/wc-command-linux-examples/) command. It provides word, line, character, and byte count statistics for text files. This project is part of a coding challenge series.
 
 [The Challenge](https://codingchallenges.substack.com/p/coding-challenge-1)
 
