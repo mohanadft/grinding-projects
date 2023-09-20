@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 const yargs = require('yargs/yargs');
 const { hideBin } = require('yargs/helpers');
-const fs = require('fs');
+const { checkFile } = require('../utils/fileUtils');
+const { bytes, characters, words, lines } = require('../utils/countOperations');
 
 const allowedFlags = [
   'l',
@@ -14,7 +15,7 @@ const allowedFlags = [
   'characters',
   '_',
   '$0'
-]; // List of allowed flags
+];
 
 const argv = yargs(hideBin(process.argv))
   .option('l', {
@@ -38,7 +39,6 @@ const argv = yargs(hideBin(process.argv))
     type: 'string'
   })
   .check(argv => {
-    // Check if any unsupported flag is passed
     const unsupportedFlags = Object.keys(argv).filter(
       flag => !allowedFlags.includes(flag)
     );
@@ -62,126 +62,31 @@ process.stdin.on('end', function () {
 
 const main = inputData => {
   if (argv.l !== undefined) {
-    console.log(lines('l', inputData));
+    console.log(lines({ flag: 'l', inputData, argv }));
   } else if (argv.c !== undefined) {
-    console.log(bytes('c', inputData));
+    console.log(bytes({ flag: 'c', inputData, argv }));
   } else if (argv.w !== undefined) {
-    console.log(words('w', inputData));
+    console.log(words({ flag: 'w', inputData, argv }));
   } else if (argv.m !== undefined) {
-    console.log(characters('m', inputData));
+    console.log(characters({ flag: 'm', inputData, argv }));
   } else {
-    let file = checkFile('_', inputData);
+    let flag = '_';
+    let file = checkFile({ flag, inputData, argv });
 
     console.log(
-      `${lines('_', inputData)} ${words('_', inputData)} ${bytes(
-        '_',
-        inputData
-      )} ${file}`
+      `${lines({ flag, inputData, argv })} ${words({
+        flag,
+        inputData,
+        argv
+      })} ${bytes({ flag, inputData, argv })} ${file}`
     );
   }
-  process.exit();
+  process.exit(0);
 };
 
-if (
-  (argv.l !== undefined && argv.l.length > 0) ||
-  (argv.c !== undefined && argv.c.length > 0) ||
-  (argv.m !== undefined && argv.m.length > 0) ||
-  (argv.w !== undefined && argv.w.length > 0) ||
-  (argv._ !== undefined && argv._.length > 0)
-)
+const flagExists = flag => {
+  return argv[flag] !== undefined && argv[flag].length > 0;
+};
+
+if (flagExists('_') || flagExists('c') || flagExists('m') || flagExists('w'))
   main();
-
-function lines(flag, inputData) {
-  let res = '';
-  const fileName = checkFile(flag, inputData);
-
-  if (!fileName.length) {
-    res = inputData.split('\n').length - 1;
-  } else {
-    const fileName = checkFile(flag);
-    const fileContent = fs.readFileSync(fileName, 'utf8');
-    res = fileContent.split('\n').length - 1;
-  }
-
-  if (flag === '_' || inputData) return `${res}`;
-
-  return `${res} ${fileName}`;
-}
-
-function bytes(flag, inputData) {
-  let res = '';
-  const fileName = checkFile(flag, inputData);
-
-  if (!fileName.length) {
-    res = Buffer.from(inputData).length;
-  } else {
-    const fileName = checkFile(flag);
-    const fileContent = fs.readFileSync(fileName);
-    res = fileContent.length;
-  }
-
-  if (flag === '_' || inputData) return `${res}`;
-
-  return `${res} ${fileName}`;
-}
-
-function words(flag, inputData) {
-  // TODO: Need some improvements, words count is not accurate.
-
-  let res = '';
-  const fileName = checkFile(flag, inputData);
-
-  if (!fileName.length) {
-    res = inputData.split(' ').filter(e => e.length >= 1).length;
-  } else {
-    const fileName = checkFile(flag);
-    const fileContent = fs.readFileSync(fileName, 'utf8');
-    res = fileContent.split(' ').filter(e => e.length >= 1).length;
-  }
-
-  if (flag === '_' || inputData) return `${res}`;
-
-  return `${res} ${fileName}`;
-}
-
-function characters(flag, inputData) {
-  let res = '';
-
-  const fileName = checkFile(flag, inputData);
-
-  if (!fileName.length) {
-    res = inputData.split('').length;
-  } else {
-    const fileContent = fs.readFileSync(fileName, 'utf8');
-
-    res = fileContent.split('').length;
-  }
-
-  if (flag === '_' || inputData) return `${res}`;
-
-  return `${res} ${fileName}`;
-}
-
-function checkFile(flag, inputData) {
-  const file = flag === '_' ? String(argv[flag][0]) : String(argv[flag]);
-
-  if (inputData || file === 'undefined') {
-    return '';
-  }
-
-  const fileExtensions = /\.(json|txt|doc|docx|html)$/gi;
-
-  if (!fileExtensions.test(file)) {
-    console.log(
-      'Invalid file extension. Supported extensions: json, txt, doc, docx, html'
-    );
-    process.exit(1);
-  }
-
-  if (!fs.existsSync(file)) {
-    console.log("File Doesn't exist");
-    process.exit(1);
-  }
-
-  return file;
-}
