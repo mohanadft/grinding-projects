@@ -88,5 +88,11 @@ const flagExists = flag => {
   return argv[flag] !== undefined && argv[flag].length > 0;
 };
 
-if (flagExists('_') || flagExists('c') || flagExists('m') || flagExists('w'))
+if (
+  flagExists('_') ||
+  flagExists('c') ||
+  flagExists('m') ||
+  flagExists('w') ||
+  flagExists('l')
+)
   main();
