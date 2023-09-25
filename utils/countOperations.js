@@ -43,7 +43,10 @@ function words({ flag, inputData, argv }) {
       .reduce((acc, curr) => acc + curr.length, 0);
   } else {
     const fileContent = getContent({ flag, fileName, inputData });
-    res = fileContent.split(' ').filter(e => e.length >= 1).length;
+    res = fileContent
+      .split('\n')
+      .map(e => e.split(' ').filter(e => e.length >= 1))
+      .reduce((acc, curr) => acc + curr.length, 0);
   }
 
   if (flag === '_' || inputData) return `${res}`;
