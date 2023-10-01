@@ -2,16 +2,9 @@
   "name": "ccwc",
   "version": "1.0.0",
   "description": "",
-  "main": "bin/index.js",
-  "bin": {
-    "ccwc": "./bin/index.js"
-  },
+  "main": "index.js",
   "scripts": {},
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "boxen": "^7.1.1",
-    "yargs": "^17.7.2"
-  }
+  "license": "ISC"
 }
